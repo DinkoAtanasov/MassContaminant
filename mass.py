@@ -6,7 +6,7 @@ import re
 import numpy as np
 import pandas as pd
 
-from typing import List, Tuple
+from typing import List
 
 
 class Ame:
@@ -48,7 +48,7 @@ class Ame:
         self.df = self.load_table()
         self.add_charge_col()
 
-    def evaluate_expr(self, expr: str, flag=False) -> Tuple(str, int, int, int):
+    def evaluate_expr(self, expr: str, flag=False) -> (str, int, int, int):
         """
         Evaluate a given expression of atomic number and symbol. 
         Can evaluate a complex molecule as well.
@@ -71,7 +71,7 @@ class Ame:
             return sym, m, a, z
 
     @staticmethod
-    def get_number_symbol(item: str) -> Tuple(List, List):
+    def get_number_symbol(item: str) -> (List, List):
         """
         Get the Atomic number and the Element symbol 
         from a specific string (does not look for multiplicity)
@@ -85,7 +85,7 @@ class Ame:
         symbols = re.findall('[A-Z][a-z]|[A-Z]', item)
         return numbers, symbols
 
-    def get_molecule_info(self, expr: str) -> Tuple(List, List, List):
+    def get_molecule_info(self, expr: str) -> (List, List, List):
         """
         Get the Molecule Info from MM8 string with multiplicity
         Examples: (2H1:1O16), (Sr82:F19), 
@@ -157,7 +157,7 @@ class Ame:
         new_entry = pd.DataFrame([cols], columns=ns)
         self.df = pd.concat([self.df, new_entry], sort=False, ignore_index=True)
 
-    def get_ame_mass(self, el_expr: str) -> Tuple(str, float, float, float, float, float, float): 
+    def get_ame_mass(self, el_expr: str) -> (str, float, float, float, float, float, float): 
         """
         Checks AME Table for existing of the element 
         with the given atomic number. Calculates the mass. 
@@ -207,7 +207,7 @@ class Ame:
         _, ame_mass, *_ = self.get_ame_mass(expression)
         return ame_mass
 
-    def get_ion_mass(self, el_symbol: str, charge=1) -> Tuple(float, float):
+    def get_ion_mass(self, el_symbol: str, charge=1) -> (float, float):
         """
         Lookup in AME Table the atomic mass and return the Ion mass
 
@@ -220,7 +220,7 @@ class Ame:
         unc_ion_mass = np.sqrt((mass_atom_unc**2) + (charge * self.me_unc)**2)
         return ion_mass, unc_ion_mass
 
-    def mass_excess(self, atomic_mass, unc_atomic_mass, mass_number) -> Tuple(float, float):
+    def mass_excess(self, atomic_mass, unc_atomic_mass, mass_number) -> (float, float):
         """
         Calculate the Mass excess from a given atomic mass and atomic mass number.
 
